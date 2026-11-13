@@ -16,7 +16,8 @@ Hỗ trợ đầu thu không dây USB `248a:5b2f` và cáp USB `248a:5b2e`.
 | Truy cập chuột | hidraw | hidapi |
 | Cài đặt | `./install.sh` | `build.bat` rồi chạy `NplayAIM-Setup`, hoặc chạy thẳng `py run.pyw` |
 | Chạy nền | icon khay (AppIndicator), tự chạy qua `~/.config/autostart` | icon khay hệ thống, tự chạy qua registry `HKCU\...\Run` |
-| Hướng dẫn chi tiết | [linux-native/README.md](linux-native/README.md) | [windows-native/README.md](windows-native/README.md) |
+| Hướng dẫn sử dụng | [linux-native/README.md](linux-native/README.md) | [windows-native/README.md](windows-native/README.md) |
+| Build / phát triển | xem README Linux | [windows-native/BUILD.md](windows-native/BUILD.md) |
 
 Hai bản **dùng chung lõi** trong `linux-native/nplayaim` (giao thức, hồ sơ, macro, bảng phím), nên hành vi
 và định dạng hồ sơ giống nhau. Bản Windows import code từ thư mục `linux-native` nằm bên cạnh,
@@ -64,7 +65,8 @@ py -m pip install -r requirements.txt
 py run.pyw
 ```
 
-Muốn đóng gói thành `dist\Nplay AIM.exe` (và file cài đặt nếu có Inno Setup 6): chạy `build.bat`.
+Muốn đóng gói thành `dist\Nplay AIM.exe` (và file cài đặt nếu có Inno Setup 6): chạy `build.bat`,
+chi tiết trong [windows-native/BUILD.md](windows-native/BUILD.md).
 
 Nếu Windows chặn exe tự build với thông báo "Application Control policy", đó là Smart App Control chặn file
 chưa ký số. Xem mục xử lý sự cố trong [windows-native/README.md](windows-native/README.md).

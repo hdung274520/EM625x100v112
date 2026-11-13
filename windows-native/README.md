@@ -1,135 +1,142 @@
-# Nplay AIM cho Windows
+# Nplay AIM cho Windows — Hướng dẫn sử dụng
 
-Bản Windows native (Qt / PySide6) của phần mềm cấu hình chuột **Nplay AIM10** (M220).
-Phần giao thức, hồ sơ và macro dùng chung với bản Linux trong `..\linux-native\nplayaim`.
-Không cần driver và không cần quyền admin.
+Phần mềm cấu hình chuột gaming **Nplay AIM10** (M220). Không cần driver, không cần quyền admin.
+Hỗ trợ đầu thu không dây USB và cáp USB.
 
----
+> Muốn tự build từ mã nguồn? Xem [BUILD.md](BUILD.md).
 
-## Hướng dẫn build trên Windows (làm một lần)
+## 1. Bắt đầu
 
-### Bước 1 — Chép mã nguồn sang Windows
+1. Cắm đầu thu (hoặc cáp USB) của chuột vào máy.
+2. Mở **Nplay AIM**. Nếu chưa có file chạy, hãy build theo [BUILD.md](BUILD.md).
+3. Nếu có chuột trong tình trạng ngủ, di chuyển chuột để đánh thức.
 
-Chép **cả thư mục `EM625x100v112`** (USB, mạng, Git…), không chỉ riêng `windows-native`.
-Bản Windows đọc code từ thư mục `linux-native` nằm bên cạnh.
+Khi kết nối thành công, góc phải trên cửa sổ hiện **Pin xx%**, và thẻ **Thiết bị** hiện model, cảm biến,
+firmware. Mọi thay đổi được ghi vào chuột ngay khi bạn chỉnh. Nếu chuột đang ngủ hoặc chưa cắm, app ghi nhớ
+và tự đồng bộ khi chuột kết nối lại.
 
-```
-EM625x100v112\
-├── linux-native\      ← lõi dùng chung (bắt buộc phải có)
-└── windows-native\    ← bản Windows, build.bat, installer.iss
-```
+> Nếu phần mềm gốc `GamingMS.exe` đang chạy, hãy đóng hẳn nó trước, vì hai chương trình không dùng chung chuột được.
 
-Nên đặt ở một đường dẫn ngắn, không có dấu tiếng Việt, ví dụ `C:\src\EM625x100v112`.
+## 2. Các thẻ trong cửa sổ
 
-### Bước 2 — Cài Python
+### Nút bấm
+Chuột có 6 nút. Bấm **Đổi…** cạnh nút cần đổi để gán chức năng:
 
-1. Tải **Python 3.12** (64-bit) từ <https://www.python.org/downloads/windows/>.
-2. Khi cài, tích **"Add python.exe to PATH"**. Giữ tùy chọn **"py launcher"** (mặc định đã bật).
-3. Mở **Command Prompt** mới và kiểm tra:
-   ```
-   py --version
-   ```
-   Lệnh này phải in ra `Python 3.12.x`.
+- chuột trái, phải, giữa, tiến, lùi;
+- DPI: vòng lặp, tăng, giảm, hoặc khóa ở một mức DPI cố định;
+- phím bắn (chọn chu kỳ và số lần), nhấn ba lần;
+- một phím hoặc tổ hợp phím, phím media, phím tắt văn phòng và cửa sổ;
+- chạy một macro;
+- chuyển hiệu ứng đèn;
+- tắt nút.
 
-### Bước 3 — Cài Inno Setup (để tạo file cài đặt)
+Nút **Khôi phục chức năng mặc định cho tất cả nút** đưa mọi nút về ban đầu.
 
-Tải và cài **Inno Setup 6** từ <https://jrsoftware.org/isdl.php>, cài vào vị trí mặc định.
-Nếu bỏ qua bước này, bạn vẫn có `Nplay AIM.exe` chạy trực tiếp được, chỉ không có file cài đặt.
+### DPI
+6 mức DPI, từ 200 đến 10000.
+- Kéo thanh trượt hoặc nhập số để đổi DPI của từng mức (giá trị tự khớp với bước của cảm biến).
+- Công tắc bên phải để bật/tắt từng mức. Luôn phải còn ít nhất một mức bật.
+- Chọn nút tròn để đặt mức đang dùng.
+- Bấm ô màu để đổi màu đèn báo của mức đó.
 
-### Bước 4 — Build
+Khi bạn bấm **nút DPI trên chuột**, mức DPI trong thẻ này tự đổi theo.
 
-Mở Command Prompt rồi chạy:
+### Đèn LED
+Chọn chế độ **Tắt**, **Nhịp thở**, **Đứng yên** hoặc **Neon**. Tùy chế độ mà có thêm tốc độ (1–3), độ sáng
+(25–100 %) và màu. Với Nhịp thở, bật các ô màu muốn dùng (tối đa 7) rồi bấm từng ô để đổi màu.
 
-```
-cd C:\src\EM625x100v112\windows-native
-build.bat
-```
+### Tần số
+Polling rate của chuột: 125, 250, 500 hoặc 1000 Hz. Số càng cao càng mượt nhưng tốn pin hơn.
 
-Script sẽ lần lượt:
-1. cài PySide6, hidapi và PyInstaller bằng pip (cần mạng, mất khoảng 1–3 phút);
-2. chạy test (6 test, tất cả phải báo `OK`);
-3. đóng gói thành `dist\Nplay AIM.exe`;
-4. nếu đã cài Inno Setup: tạo `dist\NplayAIM-Setup-1.0.0.exe`.
+### Nguồn
+Hiện % pin và trạng thái sạc. Có thể chỉnh:
+- **Tự ngủ sau** 3–10 phút không dùng;
+- **Tắt đèn khi di chuột** để tiết kiệm pin;
+- **Di chuyển để đánh thức** (tắt thì phải bấm nút mới đánh thức được chuột).
 
-### Bước 5 — Cài và chạy
+### Macro
+Macro là chuỗi thao tác phím và chuột được ghi sẵn, gán được cho một nút.
+1. Bấm **Mới**, đặt tên.
+2. Bấm **● Ghi** rồi thao tác phím, chuột hoặc cuộn. Bấm lại để dừng. Bật **Tự chèn độ trễ thực** để ghi đúng nhịp bạn bấm.
+3. Chỉnh lại: **Chèn ▾** thêm phím, click hoặc di chuyển; **▲ ▼** đổi thứ tự; sửa cột **Trễ sau (ms)**; **Xóa sự kiện** hoặc **Xóa hết**.
+4. Vào thẻ **Nút bấm**, gán macro cho nút và chọn chế độ lặp: theo số lần, lặp tới khi nhả nút, hoặc lặp tới khi nhấn lại.
 
-Chạy `dist\NplayAIM-Setup-1.0.0.exe`. Installer:
-- cài vào `%LOCALAPPDATA%\Programs\NplayAIM`, cho riêng người dùng hiện tại, không hỏi quyền admin;
-- tạo lối tắt trong Start Menu, có tùy chọn thêm biểu tượng trên màn hình nền;
-- có tùy chọn **chạy nền khi đăng nhập** (icon ở khay hệ thống, báo DPI, cảnh báo pin yếu).
+Một macro tối đa 125 sự kiện.
 
-Gỡ cài đặt: **Settings → Apps → Nplay AIM → Uninstall**. Khi gỡ, mục tự khởi động cũng bị xóa.
-Hồ sơ của bạn vẫn được giữ lại.
+### Thiết bị
+Hiện thông tin chuột. Có hai thao tác:
+- **Ghi toàn bộ hồ sơ vào chuột**: gửi lại toàn bộ cấu hình hiện tại.
+- **Khôi phục cài đặt gốc của chuột…**: đưa chuột về mặc định của nhà sản xuất.
 
----
+## 3. Hồ sơ
 
-## Kiểm tra lần chạy đầu
+App có **5 hồ sơ**, chọn ở hộp thả xuống trên cửa sổ. Mỗi hồ sơ lưu riêng nút, DPI, đèn, tần số và nguồn.
+Khi đổi hồ sơ, toàn bộ cấu hình được ghi vào chuột.
 
-Bản Windows mới chỉ được chạy thử trên Linux. Lần đầu chạy trên Windows, hãy thử các mục sau:
+Menu **Hồ sơ** có: đổi tên, nhập/xuất hồ sơ ra file JSON (để chép sang máy khác), đặt lại về mặc định.
+Hồ sơ lưu tại `%APPDATA%\nplayaim\state.json`. Chép file này sang nếu muốn giữ hồ sơ cũ khi cài lại máy.
 
-- [ ] Góc phải trên cửa sổ hiện **Pin xx%**. Thẻ **Thiết bị** hiện M220, PAW3325, firmware.
-- [ ] Đổi DPI hoặc polling trong app, rồi kiểm tra chuột có đổi theo không.
-- [ ] Bấm **nút DPI trên chuột**: ô DPI hiện ở góc phải dưới màn hình, và mức DPI trong thẻ DPI đổi theo.
-- [ ] Thẻ **Macro**: bấm Ghi, gõ vài phím (thử cả phím mũi tên và Ctrl phải), rồi kiểm tra tên phím hiện đúng.
-- [ ] Đóng cửa sổ: app vẫn còn ở khay hệ thống. Chuột phải vào icon để mở menu.
-- [ ] Menu **Tùy chọn → Chạy nền khi đăng nhập Windows**: bật/tắt, rồi khởi động lại máy để thử.
+## 4. Chạy nền và khay hệ thống
 
-Nếu mục nào sai, ghi lại lỗi hiện trên thanh vàng hoặc ở thanh trạng thái dưới cùng.
+Đóng cửa sổ thì app **vẫn chạy ở khay hệ thống**, cạnh đồng hồ. Chuột phải vào icon để:
+- đổi nhanh mức DPI;
+- đổi hồ sơ;
+- chọn kiểu hiển thị DPI;
+- mở cài đặt hoặc thoát hẳn.
 
----
+Nếu không thấy icon, bấm mũi tên `^` cạnh đồng hồ rồi kéo icon ra thanh taskbar.
 
-## Xử lý sự cố
+**Hiển thị DPI** (menu **Tùy chọn → Hiển thị DPI** hoặc menu khay):
+- **Hiện nhanh khi đổi DPI** (mặc định): khi đổi DPI, một ô hiện số DPI ở góc phải dưới màn hình trong 2,5 giây.
+  Áp dụng cho cả nút DPI trên chuột và khi chỉnh trong app.
+- **Luôn hiện trên icon**: số DPI được vẽ lên icon khay (ví dụ `3.2k`).
+- **Không hiện**.
+
+**Chạy nền khi đăng nhập Windows** (menu **Tùy chọn**): app tự mở ở khay mỗi khi bật máy.
+Nếu bạn di chuyển hoặc xóa file chạy, hãy bật lại tùy chọn này ở vị trí mới.
+
+**Cảnh báo pin yếu**: khi pin chuột còn 15 % trở xuống, app báo một lần. Bật/tắt trong menu **Tùy chọn**.
+
+Mở app lần thứ hai chỉ đưa cửa sổ đang chạy lên trước, không mở thêm bản thứ hai.
+
+## 5. Gỡ cài đặt
+
+- Nếu cài bằng installer: **Settings → Apps → Nplay AIM → Uninstall**. Mục tự khởi động cũng bị xóa.
+- Nếu chạy trực tiếp file exe: tắt **Chạy nền khi đăng nhập Windows**, thoát app ở khay rồi xóa file.
+
+Hồ sơ của bạn ở `%APPDATA%\nplayaim` vẫn được giữ lại, xóa thư mục đó nếu muốn xóa sạch.
+
+## 6. Xử lý sự cố
 
 | Hiện tượng | Cách xử lý |
 |---|---|
-| `'py' is not recognized` | Cài lại Python và tích "py launcher" / "Add to PATH". Sau đó mở Command Prompt **mới** |
-| pip báo lỗi khi cài PySide6 | Kiểm tra mạng. Dùng Python 3.12 64-bit (bản 32-bit không có PySide6) |
-| `ModuleNotFoundError: nplayaim` | Thiếu thư mục `linux-native` bên cạnh `windows-native` (xem Bước 1) |
-| Windows SmartScreen chặn installer/exe | File chưa được ký số. Bấm **More info → Run anyway** |
-| Phần mềm diệt virus báo nhầm `Nplay AIM.exe` | Thường gặp với exe do PyInstaller tạo. Thêm thư mục cài vào danh sách ngoại lệ |
-| "Không tìm thấy chuột" | Cắm đầu thu vào cổng khác, rồi đóng hẳn phần mềm gốc `GamingMS.exe` nếu đang chạy |
-| "Chuột đang ngủ hoặc tắt" | Di chuyển chuột để đánh thức. Các thay đổi sẽ tự được ghi khi chuột kết nối lại |
+| "Không tìm thấy chuột" | Cắm đầu thu vào cổng USB khác, rồi đóng hẳn `GamingMS.exe` nếu đang chạy |
+| "Chuột đang ngủ hoặc tắt" | Di chuyển chuột để đánh thức. Thay đổi sẽ tự ghi khi chuột kết nối lại |
+| Bấm nút DPI trên chuột nhưng không thấy ô DPI | Kiểm tra **Tùy chọn → Hiển thị DPI** đang là "Hiện nhanh". Ô hiện ở góc phải dưới của màn hình chính, ngay trên thanh taskbar |
 | Không thấy icon ở khay | Bấm mũi tên `^` cạnh đồng hồ, rồi kéo icon ra thanh taskbar |
+| Windows báo *"An Application Control policy has blocked this file"* | **Smart App Control** chặn file chưa ký số. Xem bên dưới |
+| SmartScreen chặn file | Bấm **More info → Run anyway**. Hoặc chuột phải file → Properties → tích **Unblock** |
+| Phần mềm diệt virus báo nhầm | Thường gặp với exe do PyInstaller tạo. Thêm file vào danh sách ngoại lệ |
+| Số DPI trên icon khay nhỏ khó đọc | Khay Windows chỉ cho icon 16–24 px. Kéo icon ra taskbar, hoặc dùng chế độ "Hiện nhanh" |
 
----
+### Smart App Control chặn file
 
-## Dành cho phát triển
+Smart App Control không có danh sách ngoại lệ cho từng app, và nút "Run anyway" không có tác dụng với nó.
+File exe tự build không có chữ ký số nên bị chặn. Có hai cách:
 
-Chạy thẳng từ mã nguồn, không cần build:
+1. **Chạy từ mã nguồn** (không đổi cài đặt bảo mật): cài Python 3.12, rồi chạy
+   `py -m pip install -r requirements.txt` và `py run.pyw` trong thư mục `windows-native`.
+2. **Tắt Smart App Control**: Windows Security → App & browser control → Smart App Control settings → **Off**.
+   Lưu ý: tắt rồi không bật lại được nếu không cài lại Windows, và máy sẽ được bảo vệ ít hơn.
 
-```
-cd windows-native
-py -m pip install -r requirements.txt
-pyw run.pyw              REM hoặc: py run.pyw  để xem lỗi trong console
-```
-
-Chạy test (dùng chuột giả, không cần cắm chuột):
-
-```
-py -m unittest discover -s tests
-cd ..\linux-native && py -m unittest discover -s tests
-```
-
-| Tệp | Nội dung |
-|---|---|
-| `run.pyw` | Điểm khởi chạy |
-| `nplayaim_win\app.py` | Cửa sổ chính, các thẻ, khay hệ thống, tự khởi động |
-| `nplayaim_win\hidwin.py` | Truy cập HID qua hidapi, luồng nền, nghe nút DPI |
-| `nplayaim_win\widgets.py` | Chọn màu, bắt phím, hộp thoại gán chức năng nút |
-| `nplayaim_win\macro_page.py` | Trình sửa macro |
-| `build.bat`, `installer.iss` | Đóng gói exe và tạo installer |
-
-Đổi phiên bản: sửa `__version__` trong `linux-native\nplayaim\__init__.py` và `AppVersion` trong `installer.iss`.
-
-## Khác biệt so với bản Linux
+## 7. Khác biệt so với bản Linux
 
 | Bản Linux | Bản Windows |
 |---|---|
-| Chữ `3200 DPI` cạnh icon khay | Khay Windows không hiện được chữ. Chế độ "Hiện nhanh" hiện một ô DPI ở góc phải dưới màn hình trong 2,5 giây. Chế độ "Luôn hiện" vẽ số DPI lên icon (ví dụ `3.2k`) |
+| Chữ `3200 DPI` cạnh icon khay | Khay Windows không hiện được chữ: dùng ô DPI ở góc màn hình, hoặc vẽ số lên icon |
 | Tự chạy qua `~/.config/autostart` | Tự chạy qua registry `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` |
-| Hồ sơ ở `~/.config/nplayaim/state.json` | Hồ sơ ở `%APPDATA%\nplayaim\state.json` (chép file này sang nếu muốn giữ hồ sơ từ Linux) |
+| Hồ sơ ở `~/.config/nplayaim/state.json` | Hồ sơ ở `%APPDATA%\nplayaim\state.json` |
 | Cần udev rule | Không cần |
-| Có lệnh `nplayaim info/dpi/…` | Không có (exe chạy không có console) |
+| Có lệnh `nplayaim info/dpi/…` | Không có |
 
-Các tính năng còn lại giống bản Linux: gán nút, 6 mức DPI, đèn LED, polling rate, nguồn và pin, macro,
-5 hồ sơ, nhập/xuất hồ sơ, cảnh báo pin yếu. Mở app lần thứ hai chỉ đưa cửa sổ đang chạy lên trước.
+Các tính năng còn lại giống bản Linux.

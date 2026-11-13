@@ -1,0 +1,6 @@
+# NPLAYAIM10 gaming mouse (wired 248a:5b2e, wireless dongle 248a:5b2f)
+# Give members of "plugdev" (and the logged-in seat user via uaccess) raw HID access.
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="248a", ATTRS{idProduct}=="5b2e", TAG+="uaccess", GROUP="plugdev", MODE="0660"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="248a", ATTRS{idProduct}=="5b2f", TAG+="uaccess", GROUP="plugdev", MODE="0660"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="248a", ATTRS{idProduct}=="5b2e", TAG+="uaccess", GROUP="plugdev", MODE="0660"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="248a", ATTRS{idProduct}=="5b2f", TAG+="uaccess", GROUP="plugdev", MODE="0660"

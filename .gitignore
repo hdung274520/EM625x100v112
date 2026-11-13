@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+
+# Windows build output
+windows-native/build/
+windows-native/dist/
+windows-native/*.spec
+
+# Editors
+.vscode/
+.idea/
